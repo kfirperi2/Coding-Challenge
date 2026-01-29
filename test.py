@@ -8,8 +8,8 @@ from pathlib import Path
 #Make SQLite accept Postgres CITEXT
 from sqlalchemy.dialects.sqlite.base import SQLiteTypeCompiler
 
-if not hasattr(SQLiteTypeCompiler, "visit_CITEXT"):
-    SQLiteTypeCompiler.visit_CITEXT = lambda self, type_, **kw: "TEXT"
+# if not hasattr(SQLiteTypeCompiler, "visit_CITEXT"):
+#     SQLiteTypeCompiler.visit_CITEXT = lambda self, type_, **kw: "TEXT"
 
 from app.main import app
 from app.database import get_db, Base
