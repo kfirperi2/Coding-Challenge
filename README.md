@@ -16,3 +16,7 @@ You can test endpoints and see results.
 
 Run pytest:
 pytest test.py
+
+NOTE:
+I have attached the SQL scripts I used to create the vehicles table in file name 'Used SQL-scripts'.
+There are also unused SQL scripts for when I first had tables with relationships but didn't use this approach
