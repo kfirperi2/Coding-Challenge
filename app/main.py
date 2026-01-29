@@ -30,6 +30,7 @@ def create_vehicle(vehicle: schemas.VehicleCreate, db: Session = Depends(get_db)
     if db_vehicle:
         raise HTTPException(status_code=400, detail="VIN already exists")
     new_vehicle = models.Vehicle(**vehicle.model_dump())
+    new_vehicle.vin = new_vehicle.vin.upper()
     db.add(new_vehicle)
     db.commit()
     db.refresh(new_vehicle)
@@ -50,7 +51,7 @@ def update_vehicle(vin: str, vehicle_update: schemas.VehicleBase, db: Session = 
 def delete_vehicle(vin: str, db: Session = Depends(get_db)):
     vehicle = db.query(models.Vehicle).filter(models.Vehicle.vin == vin).first()
     if not vehicle:
-        raise HTTPException(status_code=404, detail="Vehicle not found")
+        raise HTTPException(status_code=400, detail="Vehicle not found")
     db.delete(vehicle)
     db.commit()
     return
