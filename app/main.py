@@ -13,11 +13,47 @@ app = FastAPI(title="Vehicle APIs")
 def get_vehicles(db: Session = Depends(get_db)):
     try:
         vehicles = db.query(models.Vehicle).all()
-        print(f"Returning {len(vehicles)} vehicles")
         return vehicles
     except Exception as e:
-        print("Error in get_vehicles:", e)  # prints to terminal
-        raise HTTPException(status_code=500, detail=str(e))
+        raise HTTPException(status_code=400, detail=str(e))
     
+@app.get("/vehicle/{vin}", response_model=schemas.VehicleOut)
+def get_vehicle(vin: str, db: Session = Depends(get_db)):
+    vehicle = db.query(models.Vehicle).filter(models.Vehicle.vin == vin).first()
+    if not vehicle:
+        raise HTTPException(status_code=400, detail="Vehicle not found")
+    return vehicle
+
+@app.post("/vehicle", response_model=schemas.VehicleOut, status_code=201)
+def create_vehicle(vehicle: schemas.VehicleCreate, db: Session = Depends(get_db)):
+    db_vehicle = db.query(models.Vehicle).filter(models.Vehicle.vin == vehicle.vin).first()
+    if db_vehicle:
+        raise HTTPException(status_code=400, detail="VIN already exists")
+    new_vehicle = models.Vehicle(**vehicle.model_dump())
+    db.add(new_vehicle)
+    db.commit()
+    db.refresh(new_vehicle)
+    return new_vehicle
+
+@app.put("/vehicle/{vin}", response_model=schemas.VehicleOut)
+def update_vehicle(vin: str, vehicle_update: schemas.VehicleBase, db: Session = Depends(get_db)):
+    vehicle = db.query(models.Vehicle).filter(models.Vehicle.vin == vin).first()
+    if not vehicle:
+        raise HTTPException(status_code=400, detail="Vehicle not found")
+    for key, value in vehicle_update.model_dump(exclude_unset=True).items():
+        setattr(vehicle, key, value)
+    db.commit()
+    db.refresh(vehicle)
+    return vehicle
+    
+@app.delete("/vehicle/{vin}", status_code=204)
+def delete_vehicle(vin: str, db: Session = Depends(get_db)):
+    vehicle = db.query(models.Vehicle).filter(models.Vehicle.vin == vin).first()
+    if not vehicle:
+        raise HTTPException(status_code=404, detail="Vehicle not found")
+    db.delete(vehicle)
+    db.commit()
+    return
+
 #uvicorn app.main:app --reload
-# curl http://127.0.0.1:8000/vehicle
+# http://127.0.0.1:8000/docs

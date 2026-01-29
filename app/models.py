@@ -46,10 +46,11 @@ class Vehicle(Base):
     __tablename__ = "vehicles"
     
     vin = Column(CITEXT, primary_key=True)
-    manufacturer_name = Column(String, nullable=True)
-    horse_power = Column(Integer, nullable=True)
-    model_year = Column(Integer, nullable=True)
-    purchase_price = Column(Numeric(12,2), nullable=True)
-    fuel_type = Column(String, nullable=True)
-    description = Column(Text, nullable=True)
+    manufacturer_name = Column(String, nullable=False)
+    horse_power = Column(Integer, nullable=False)
+    model_name = Column(String, nullable=False)
+    model_year = Column(Integer, nullable=False)
+    purchase_price = Column(Numeric(12,2), nullable=False)
+    fuel_type = Column(String, nullable=False)
+    description = Column(Text, nullable=False)
     last_updated = Column(DateTime(timezone=True), server_default=func.now(), onupdate=func.now())
