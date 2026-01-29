@@ -1,4 +1,5 @@
 Activate your virtual environment:
+python -m venv venv
 source venv/bin/activate
 (I used source venv/Scripts/activate on bash terminal having my database in windows)
 
