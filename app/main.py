@@ -55,6 +55,3 @@ def delete_vehicle(vin: str, db: Session = Depends(get_db)):
     db.delete(vehicle)
     db.commit()
     return
-
-#uvicorn app.main:app --reload
-# http://127.0.0.1:8000/docs

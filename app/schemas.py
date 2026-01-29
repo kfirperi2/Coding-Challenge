@@ -1,4 +1,4 @@
-from pydantic import BaseModel, field_validator, Field
+from pydantic import BaseModel, field_validator, Field, ConfigDict
 from datetime import datetime
 
 ALLOWED_FUEL_TYPES = {"Gasoline Regular", "Gasoline Mid-Grade", "Gasoline Premium", "Diesel"}
@@ -67,8 +67,10 @@ class VehicleOut(BaseModel):
     description: str
     last_updated: datetime
 
+    # class Config:
+    #     from_attributes = True
     class Config:
-        from_attributes = True
+        model_config = ConfigDict(from_attributes=True)
 
     @field_validator("manufacturer_name", "model_name", "fuel_type", mode="before")
     @classmethod
