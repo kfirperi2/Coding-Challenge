@@ -12,3 +12,5 @@ app = FastAPI(title="Vehicle APIs")
 @app.get("/vehicles/", response_model=list[schemas.VehicleOut])
 def get_vehicles(db: Session = Depends(get_db)):
     return db.query(models.Vehicle).all()
+
+#uvicorn app.main:app --reload
