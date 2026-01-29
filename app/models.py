@@ -2,7 +2,7 @@ from sqlalchemy import Column, Integer, String, Numeric, Text, ForeignKey, DateT
 # from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
 from .database import Base
-from sqlalchemy.dialects.postgresql import CITEXT
+# from sqlalchemy.dialects.postgresql import CITEXT
 
 # class Manufacturer(Base):
 #     __tablename__ = "manufacturer"
@@ -45,7 +45,7 @@ from sqlalchemy.dialects.postgresql import CITEXT
 class Vehicle(Base):
     __tablename__ = "vehicles"
     
-    vin = Column(CITEXT, primary_key=True)
+    vin = Column(String, primary_key=True)
     manufacturer_name = Column(String, nullable=False)
     horse_power = Column(Integer, nullable=False)
     model_name = Column(String, nullable=False)

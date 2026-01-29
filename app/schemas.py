@@ -45,10 +45,16 @@ class VehicleBase(BaseModel):
     def validate_fuel_type(cls, v):
         if v not in ALLOWED_FUEL_TYPES:
             raise ValueError(f"fuel_type must be one of {ALLOWED_FUEL_TYPES}")
-        return v.lower()
+        return v
 
 class VehicleCreate(VehicleBase):
-    vin: str = Field(..., max_length=17, description="Vehicle VIN")
+    vin: str = Field(
+        ..., 
+        min_length=17,
+        max_length=17,
+        pattern=r'^[A-Za-z0-9]{17}$',
+        description="Vehicle VIN (17 alphanumeric characters)"
+    )
 
 class VehicleOut(BaseModel):
     vin: str  
