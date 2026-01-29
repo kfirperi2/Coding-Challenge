@@ -50,5 +50,5 @@ class Vehicle(Base):
     description = Column(Text, nullable=True)
     last_updated = Column(DateTime(timezone=True), server_default=func.now(), onupdate=func.now())
 
-    model = relationship("Model")
-    fuel = relationship("Fuel")
+    model = relationship("Model", back_populates="vehicles")
+    fuel = relationship("Fuel", back_populates="vehicles")

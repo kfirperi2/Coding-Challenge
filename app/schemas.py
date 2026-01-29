@@ -17,4 +17,4 @@ class VehicleOut(VehicleBase):
     last_update: datetime
 
 class Config:
-    from_attributes = True
+    orm_mode = True
